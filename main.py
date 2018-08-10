@@ -24,9 +24,28 @@ def display(board):
     row = 8 - index
     print("%s: %s"%(row, pieces))
 
+def move(board, origin, end):
+  temp =  board[constant.row[origin[1]]][constant.column[origin[0]]]
+  board[constant.row[origin[1]]][constant.column[origin[0]]] = " "
+  board[constant.row[end[1]]][constant.column[end[0]]] = temp
+
+  return
+
 if __name__ == '__main__':
   board = createBoard()
   display(board)
+
+  while True:
+    userInput = input()
+    if userInput == "q":
+      exit()
+    else:
+      moveInput = userInput.split("-")
+      print(moveInput)
+      move(board,moveInput[0], moveInput[1])
+      display(board)
+
+
 
 
   

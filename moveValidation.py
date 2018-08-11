@@ -15,24 +15,26 @@ def isValidMove(board, origin, end):
   white_pieces = "P R N B Q K".split(" ")
   black_pieces = "p r n b q k".split(" ")
 
-  # Check if white moves is valid
-  if end_piece in white_pieces:
+  # Check for friendly fire
+  if all(piece in white_pieces for piece in [origin_piece, end_piece]) or all(piece in black_pieces for piece in [origin_piece, end_piece]):
     return False
+
   if origin_piece == 'P':
-    # move forward
-    # can only move 2 blocks
-    if row_diff > 0 and row_diff <= 2 and column_diff < 2:
-      if row_diff == 2 and column_diff == 1:
-        return False
-      elif row_diff == 1 and column_diff == 1 and (end_piece == " "):
-        return False
-      elif row_diff == 2 and origin_row != constant.row["2"]:
-        return False
-      elif row_diff == 1 and column_diff == 0 and end_piece != " ":
-        return False
-    else:
+    if not(
+      (row_diff == 1 and column_diff == 0 and end_piece == " ")
+      or (row_diff == 1 and abs(column_diff) == 1 and end_piece != " ")
+      or (row_diff == 2 and origin_row == constant.row["2"])
+    ):
       return False
-  elif origin_piece == 'R':
+  elif origin_piece == 'p':
+    if not(
+      (row_diff == -1 and column_diff == 0 and end_piece == " ")
+      or (row_diff == -1 and abs(column_diff) == 1 and end_piece != " ")
+      or (row_diff == -2 and origin_row == constant.row["7"])
+    ):
+      return False
+    
+  elif origin_piece.upper() == 'R':
     if (abs(row_diff) > 0 and abs(column_diff) > 0):
       return False
     else:
@@ -62,10 +64,10 @@ def isValidMove(board, origin, end):
             if board[i][origin_column] != " ":
               return False
             i += 1
-  elif origin_piece == 'N':
+  elif origin_piece.upper() == 'N':
     if not((abs(row_diff) == 2 and abs(column_diff) == 1) or (abs(row_diff) == 1 and abs(column_diff) == 2)):
       return False
-  elif origin_piece == 'B':
+  elif origin_piece.upper() == 'B':
     if not(abs(row_diff) == abs(column_diff)):
       return False
     
@@ -105,7 +107,7 @@ def isValidMove(board, origin, end):
           i += 1
           j -= 1
       
-  elif origin_piece == 'Q':
+  elif origin_piece.upper() == 'Q':
     if not(abs(row_diff) == abs(column_diff)) and not(row_diff == 0 or column_diff == 0):
       return False
     
@@ -168,5 +170,8 @@ def isValidMove(board, origin, end):
           if board[origin_row][i] != " ":
             return False
           i -= 1
+  elif origin_piece.upper() == 'K':
+    if row_diff > 1 or column_diff > 1:
+      return False
 
   return True

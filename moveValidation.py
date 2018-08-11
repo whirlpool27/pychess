@@ -30,7 +30,6 @@ def isValidMove(board, origin, end):
         return False
       elif row_diff == 1 and column_diff == 0 and end_piece != " ":
         return False
-      return True
     else:
       return False
   elif origin_piece == 'R':
@@ -69,21 +68,105 @@ def isValidMove(board, origin, end):
   elif origin_piece == 'B':
     if not(abs(row_diff) == abs(column_diff)):
       return False
-
-      i = 1
-
-      while origin_row != end_row :
-        if row_diff > 0 and column_diff > 0:
-          if board[origin_row - i][origin_column + i] != " ":
+    
+    if row_diff > 0:
+      if column_diff > 0:
+        i = origin_row - 1
+        j = origin_column + 1
+        while i > end_row:
+          if board[i][j] != " ":
             return False
-        if row_diff > 0 and column_diff < 0:
-          if board[origin_row - i][origin_column - i] != " ":
+          i -= 1
+          j += 1
+      else:
+        i = origin_row - 1
+        j = origin_column - 1
+        while i > end_row:
+          if board[i][j] != " ":
             return False
-        if row_diff < 0 and column_diff < 0:
-          if board[origin_row + i][origin_column - i] != " ":
+          i -= 1
+          j -= 1
+      
+    if row_diff < 0:
+      if column_diff > 0:
+        i = origin_row + 1
+        j = origin_column + 1
+        while i < end_row:
+          if board[i][j] != " ":
             return False
-        if row_diff < 0 and column_diff > 0:
-          if board[origin_row + i][origin_column + i] != " ":
+          i += 1
+          j += 1
+      else:
+        i = origin_row + 1
+        j = origin_column - 1
+        while i < end_row:
+          if board[i][j] != " ":
             return False
+          i += 1
+          j -= 1
+      
+  elif origin_piece == 'Q':
+    if not(abs(row_diff) == abs(column_diff)) and not(row_diff == 0 or column_diff == 0):
+      return False
+    
+    if row_diff > 0:
+      if column_diff > 0:
+        i = origin_row - 1
+        j = origin_column + 1
+        while i > end_row:
+          if board[i][j] != " ":
+            return False
+          i -= 1
+          j += 1
+      elif column_diff < 0:
+        i = origin_row - 1
+        j = origin_column - 1
+        while i > end_row:
+          if board[i][j] != " ":
+            return False
+          i -= 1
+          j -= 1
+      else:
+        i = origin_row - 1
+        while i > end_row:
+          print (board[i][origin_column] != " ")
+          if board[i][origin_column] != " ":
+            print(i, end_row)
+            return False
+          i -= 1
+    if row_diff < 0:
+      i = origin_row + 1
+      if column_diff > 0:        
+        j = origin_column + 1
+        while i < end_row:
+          if board[i][j] != " ":
+            return False
+          i += 1
+          j += 1
+      elif column_diff < 0:
+        j = origin_column - 1
+        while i < end_row:
+          if board[i][j] != " ":
+            return False
+          i += 1
+          j -= 1
+      else: # column_diff == 0
+        while i < end_row:
+          if board[i][origin_column] != " ":
+            return False
+          i += 1
+    else: # row_diff == 0
+      if column_diff > 0:
+        i = origin_column + 1
+        while i < end_column:
+          if board[origin_row][i] != " ":
+            return False
+          i += 1
+      elif column_diff < 0:
+        i = origin_column - 1
+        while i > end_column:
+          if board[origin_row][i] != " ":
+            return False
+          i -= 1
 
   return True

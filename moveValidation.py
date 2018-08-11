@@ -1,5 +1,8 @@
 import constant
 
+# TEMPORARY FILE TO GET ALGORITHM, WILL TURN THIS INTO "INTERFACE"
+# AND CREATE EACH PIECES INTO DIFFERENT FILE OF IMPLEMENTED INTERFACE
+
 def isValidMove(board, origin, end):
   origin_row = constant.row[origin[1]]
   origin_column = constant.column[origin[0]]
@@ -36,32 +39,51 @@ def isValidMove(board, origin, end):
     else:
       if row_diff == 0:
         if column_diff > 0:
-          index = origin_column + 1
-          while index < end_column:
-            if board[origin_row][index] != " ":
+          i = origin_column + 1
+          while i < end_column:
+            if board[origin_row][i] != " ":
               return False
-            index += 1
+            i += 1
         else:
-          index = origin_column - 1
-          while index > end_column:
-            if board[origin_row][index] != " ":
+          i = origin_column - 1
+          while i > end_column:
+            if board[origin_row][i] != " ":
               return False
-            index -= 1
+            i -= 1
       else: # column diff == 0
         if row_diff > 0:
-          index = origin_row - 1
-          while index > end_row:
-            if board[index][origin_column] != " ":
+          i = origin_row - 1
+          while i > end_row:
+            if board[i][origin_column] != " ":
               return False
-            index -= 1
+            i -= 1
         else:
-          index = origin_row + 1
-          while index < end_row:
-            if board[index][origin_column] != " ":
+          i = origin_row + 1
+          while i < end_row:
+            if board[i][origin_column] != " ":
               return False
-            index += 1
+            i += 1
   elif origin_piece == 'N':
-    print(row_diff, column_diff)
     if not((abs(row_diff) == 2 and abs(column_diff) == 1) or (abs(row_diff) == 1 and abs(column_diff) == 2)):
       return False
+  elif origin_piece == 'B':
+    if not(abs(row_diff) == abs(column_diff)):
+      return False
+
+      i = 1
+
+      while origin_row != end_row :
+        if row_diff > 0 and column_diff > 0:
+          if board[origin_row - i][origin_column + i] != " ":
+            return False
+        if row_diff > 0 and column_diff < 0:
+          if board[origin_row - i][origin_column - i] != " ":
+            return False
+        if row_diff < 0 and column_diff < 0:
+          if board[origin_row + i][origin_column - i] != " ":
+            return False
+        if row_diff < 0 and column_diff > 0:
+          if board[origin_row + i][origin_column + i] != " ":
+            return False
+
   return True
